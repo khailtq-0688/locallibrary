@@ -1,0 +1,6 @@
+# === PYTHON CACHE FILES ===
+__pycache__/
+
+# Virtual environment
+.env
+.env/
