@@ -4,3 +4,6 @@ __pycache__/
 # Virtual environment
 .env
 .env/
+
+# locale
+catalog/locale/vi/LC_MESSAGES/*
