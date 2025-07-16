@@ -1,4 +1,5 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
+from django.views import generic
 
 # Create your views here.
 from .models import (
@@ -26,3 +27,38 @@ def index(request):
     }
 
     return render(request, 'index.html', context=context)
+
+
+class BookListView(generic.ListView):
+    model = Book
+    context_object_name = 'book_list'
+    template_name = 'catalog/book_list.html'
+
+    def get_queryset(self):
+        queryset = Book.objects.all()
+        query = self.request.GET.get('q')
+        if query:
+            queryset = queryset.filter(title__icontains=query)
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super(BookListView, self).get_context_data(**kwargs)
+        context['some_data'] = 'This is just some data'
+        context['LoanStatus'] = LoanStatus
+        return context
+
+
+class BookDetailView(generic.DetailView):
+    model = Book
+
+    def book_detail_view(request, primary_key):
+        book = get_object_or_404(Book, pk=primary_key)
+        return render(
+            request, 'catalog/book_detail.html',
+            context={'book': book}
+        )
+
+    def get_context_data(self, **kwargs):
+        context = super(BookDetailView, self).get_context_data(**kwargs)
+        context['LoanStatus'] = LoanStatus
+        return context
