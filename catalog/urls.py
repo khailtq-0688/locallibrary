@@ -6,3 +6,16 @@ urlpatterns = [
     path('books/', views.BookListView.as_view(), name='books'),
     path('book/<int:pk>', views.BookDetailView.as_view(), name='book-detail'),
 ]
+
+urlpatterns += [
+    path(
+        'mybooks/',
+        views.LoanedBooksByUserListView.as_view(),
+        name='my-borrowed'
+        ),
+    path(
+        'borrowed/',
+        views.LoanedBooksAllListView.as_view(),
+        name='all-borrowed'
+        ),
+]

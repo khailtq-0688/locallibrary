@@ -1,5 +1,8 @@
 from django.shortcuts import render, get_object_or_404
 from django.views import generic
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin, PermissionRequiredMixin
+)
 
 # Create your views here.
 from .models import (
@@ -8,7 +11,10 @@ from .models import (
     BookInstance,
     Author,
 )
-from .constants import LoanStatus
+from .constants import (
+    LoanStatus,
+    FieldConstants
+)
 
 
 def index(request):
@@ -67,3 +73,25 @@ class BookDetailView(generic.DetailView):
         context = super(BookDetailView, self).get_context_data(**kwargs)
         context['LoanStatus'] = LoanStatus
         return context
+
+
+class LoanedBooksByUserListView(LoginRequiredMixin, generic.ListView):
+    model = BookInstance
+    template_name = 'catalog/bookinstance_list_borrowed_user.html'
+
+    def get_queryset(self):
+        return (
+            BookInstance.objects.filter(borrower=self.request.user)
+            .filter(status__exact=LoanStatus.ON_LOAN)
+            .order_by('due_back')
+        )
+
+
+class LoanedBooksAllListView(PermissionRequiredMixin, generic.ListView):
+    model = BookInstance
+    template_name = 'catalog/bookinstance_list_borrowed_all.html'
+    paginate_by = FieldConstants.PAGINATION_PER_PAGE
+    permission_required = 'catalog.can_mark_returned'
+
+    def get_queryset(self):
+        return BookInstance.objects.filter(status__exact=LoanStatus.ON_LOAN).order_by('due_back')
