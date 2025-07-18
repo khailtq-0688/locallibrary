@@ -8,6 +8,7 @@ class FieldConstants:
     MAX_LENGTH_IMPRINT = 200
     MAX_LENGTH_AUTHOR_NAME = 100
     BOOK_INSTANCE_STATUS_MAX_LENGTH = 1
+    PAGINATION_PER_PAGE = 10
 
 class HelpTexts:
     GENRE_NAME = _("Enter a book genre (e.g. Science Fiction, French Poetry etc.)")
