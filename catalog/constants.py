@@ -9,6 +9,8 @@ class FieldConstants:
     MAX_LENGTH_AUTHOR_NAME = 100
     BOOK_INSTANCE_STATUS_MAX_LENGTH = 1
     PAGINATION_PER_PAGE = 10
+    RENEWAL_DATE = 4
+    DEFAULT_RENEWAL_DATE = 3
 
 class HelpTexts:
     GENRE_NAME = _("Enter a book genre (e.g. Science Fiction, French Poetry etc.)")
